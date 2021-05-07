@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Treasure Trove</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">New Transaction</string>
+    <string-array name="category_names">
+        <item>Food</item>
+        <item>House Rent</item>
+        <item>Entertainment</item>
+        <item>Savings</item>
+        <item>Income</item>
+    </string-array>
+    <string-array name="payment_method">
+        <item>Cash</item>
+        <item>Card</item>
+        <item>Paytm</item>
+        <item>Google Pay</item>
+    </string-array>
+</resources>

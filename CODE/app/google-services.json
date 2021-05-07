@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "174568803705",
+    "project_id": "mcapp-ffdb6",
+    "storage_bucket": "mcapp-ffdb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174568803705:android:89487593486878446c33a8",
+        "android_client_info": {
+          "package_name": "com.mcapp.mcapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174568803705-t5b9uc04r9cs4h40tmn1qr57sdna5jdv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mcapp.mcapp",
+            "certificate_hash": "ac760a96d4bc64d5814824b68ef9d1f7329f35d1"
+          }
+        },
+        {
+          "client_id": "174568803705-fu530djhaflvrbrjlfst12istn2v60f1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6NrTq1PcTKTFS2jpms-DqTOY3mS1FeUQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174568803705-fu530djhaflvrbrjlfst12istn2v60f1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
