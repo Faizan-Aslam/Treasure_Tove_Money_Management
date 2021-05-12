@@ -1,5 +1,4 @@
-
-INTRODUCTION: 
+# INTRODUCTION: 
 
 As a part of ISEE, a project kickoff meeting was initiated and allocation of resources for the project was accomplished.
 The Resources which are part of the project Tresure_Trove(An Android application on money control) are:
@@ -13,7 +12,7 @@ The application was named,logo was created, a powerpoint presentation describing
 Created a gitLab repository for the team and a Blog was written by Venkata Kanumuri Subba Raju.
 Further, Requirment Analysis is in progress , which was initiated after interracting with our client/Tutor Tarun Gupta.
 
-Goals & Responsibilities:
+## Goals & Responsibilities:
 Arrange a team meeting to finalise on the requirments and formulate the user stories accordingly.
 We have come up with the following agenda for this week:
 Modelling of system
