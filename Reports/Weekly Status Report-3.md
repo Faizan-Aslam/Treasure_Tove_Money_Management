@@ -2,7 +2,7 @@ In the following week, we present the status and the working of the team for the
 
 **ROLES AND RESPONSIBILITIES**
 
-MUHAMMAD FAIZAN ASLAM & PRANTO  : PREPERATION OF USER STORIES AND CLASS DIAGRAMS
+MUHAMMAD FAIZAN ASLAM & PRANTO  : PREPERATION OF USER STORIES AND CLASS DIAGRAMS <br>
 LAKSHMI HARIKA NAKKA & KVS RAJU : DEVELOPMENT OF THE APPLICATION.
 
 We conducted a sprint call in which we set few goals for the week, we were able to achieve most of them sucessfully.
