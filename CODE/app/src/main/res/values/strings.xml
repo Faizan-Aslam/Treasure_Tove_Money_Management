@@ -1,8 +1,18 @@
 <resources>
     <string name="app_name">Treasure Trove</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">New Transaction</string>
+    <string name="title_navhome">Treasure Trove</string>
+    <string name="title_navdashboard">Dashboard</string>
+    <string name="title_navnotifications">New Transaction</string>
+    <string name="title_home">"  "Treasure Trove</string>
+    <string name="title_dashboard">"  "Dashboard</string>
+    <string name="title_notifications">"  "New Transaction</string>
+    <string name="title_aboutactivity">About</string>
+    <string name="title_contactactivity">Contact Us</string>
+    <string name="title_viewprofileactivity">My Profile</string>
+    <string name="title_faqactivity">Frequently asked questions</string>
+    <string name="title_viewitemactivity">Update/Delete transaction</string>
+    <string name="title_registeractivity">Register</string>
+    <string name="title_forgotpasswordactivity">Forgot Password</string>
     <string-array name="category_names">
         <item>Food</item>
         <item>House Rent</item>
@@ -13,7 +23,15 @@
     <string-array name="payment_method">
         <item>Cash</item>
         <item>Card</item>
-        <item>Paytm</item>
         <item>Google Pay</item>
     </string-array>
+    <string name="forgot_password"><u>Forgot Password</u></string>
+    <string name="register"><u>Register</u></string>
+
+    <!-- ABOUT PAGES -->
+    <string name="about_title_newtransaction">Add new transaction</string>
+    <string name="about_title_viewtransaction">View transactions</string>
+    <string name="about_title_updatedeletetransaction">Update/Delete transaction</string>
+    <string name="about_title_searchfiltertransaction">Search/Filter transaction</string>
+
 </resources>

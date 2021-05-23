@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 
+import com.mcapp.mcapp.ui.GlobalClass;
 import com.mcapp.mcapp.ui.dashboard.DashboardFragment;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,12 +46,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     ArrayList<Model> modelList;
     List<Model> fullList;
     DashboardFragment dashboardFragment = new DashboardFragment();
+    GlobalClass globalVariable;
 
-    public MyAdapter(MyAdapterEvents myAdapterEvents,Context ct, ArrayList<Model> modelList) {
-        this.myAdapterEvents = myAdapterEvents;
-        this.context = ct;
-        this.modelList = modelList;
-        fullList =  new ArrayList<>(modelList);
+    public MyAdapter(MyAdapterEvents myAdapterEvents,Context ct, ArrayList<Model> modelList, Context applicationContext) {
+        try {
+            this.myAdapterEvents = myAdapterEvents;
+            this.context = ct;
+            this.modelList = modelList;
+            fullList = new ArrayList<>(modelList);
+            globalVariable = (GlobalClass) applicationContext;
+        }
+        catch (Exception e){
+            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     @NonNull
@@ -60,24 +71,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        Model mod= modelList.get(position);
-        String str = mod.getCategory() + "  [ " + mod.getAmount() + " ]";
-        holder.text.setText(str);
-        holder.description.setText(mod.getComment());
+        try {
+            Model mod = modelList.get(position);
+            //String str = mod.getCategory() + "  [ " + mod.getAmount() + " ]";
+            holder.text.setText("Category : " + mod.getCategory());
+            holder.amountSpent.setText("Amount Spent : $ " + mod.getAmount());
+            holder.description.setText(mod.getTransactionName());
 
-        String dateString = mod.getDate().substring(0,10);
-        //Date dt1 = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(dateString);
-        holder.dateDb.setText(dateString);
+            String dateString = mod.getDate().substring(0, 10);
+            //Date dt1 = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(dateString);
+            holder.dateDb.setText(dateString);
 
-            switch(mod.getPaymentMethod()) {
+            switch (mod.getPaymentMethod()) {
                 case "Cash":
                     holder.imageview.setImageResource(R.drawable.cash);
                     break;
                 case "Card":
                     holder.imageview.setImageResource(R.drawable.card);
-                    break;
-                case "Paytm":
-                    holder.imageview.setImageResource(R.drawable.paytm);
                     break;
                 case "Google Pay":
                     holder.imageview.setImageResource(R.drawable.gpay);
@@ -86,14 +96,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
                     holder.imageview.setImageResource(R.drawable.cash);
                     break;
             }
-        holder.itemView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Toast.makeText(context,"CLICKED: "+position,Toast.LENGTH_SHORT).show();
-                myAdapterEvents.onMyAdapterClicked(modelList.get(position));
-            }
-        });
-
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myAdapterEvents.onMyAdapterClicked(modelList.get(position));
+                }
+            });
+        }
+        catch (Exception e){
+            Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -110,61 +122,84 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             String searchText = constraint.toString().toLowerCase();
+            String filterValue = globalVariable.getFilterValue();
+            String sortValue = globalVariable.getSortValue();
             List<Model> tempList = new ArrayList<Model>();
-            if(searchText.length() == 0 || searchText.isEmpty()) {
-                tempList.addAll(fullList);
-            }
-            else {
-                int filterType =  dashboardFragment.FilterValues[0];
-                int sortType = dashboardFragment.FilterValues[1];
-                Toast.makeText(context,"filter type[0]: " + filterType,Toast.LENGTH_SHORT).show();
+            try {
+                if (searchText == null || searchText.isEmpty()) {
+                    tempList.addAll(fullList);
+                } else {
+                    //int filterType =  dashboardFragment.FilterValues[0];
+                    //int sortType = dashboardFragment.FilterValues[1];
+                    //Toast.makeText(context,"Filter value : {0} , Sort value : {1} " + globalVariable.getFilterValue() + globalVariable.getSortValue(),Toast.LENGTH_SHORT).show();
 
-                for(Model item:fullList){
-                        if (item.getCategory().toLowerCase().contains(searchText) || item.getPaymentMethod().toLowerCase().contains(searchText)
-                                || item.getComment().toLowerCase().contains(searchText) || item.getDate().toLowerCase().contains(searchText)) {
-                            tempList.add(item);
-                        }
-                    /*//if(filterType == 0){
-                        if(item.getCategory().toLowerCase().contains(searchText) || item.getPaymentMethod().toLowerCase().contains(searchText)
-                                || item.getComment().toLowerCase().contains(searchText) || item.getDate().toLowerCase().contains(searchText))
-                        {
-                   // }*/
-                   /* else if(filterType == 1)
-                    {
-                        if(item.getCategory().toLowerCase().contains(searchText)){
-                            tempList.add(item);
+                    for (Model item : fullList) {
+                        if (filterValue == null) {
+                            if (item.getTransactionName().toLowerCase().contains(searchText) || item.getCategory().toLowerCase().contains(searchText) || item.getPaymentMethod().toLowerCase().contains(searchText)
+                                    || item.getComment().toLowerCase().contains(searchText) || item.getDate().toLowerCase().contains(searchText) || item.getAmount().toLowerCase().contains(searchText)) {
+                                tempList.add(item);
+                            }
+                        } else if (filterValue.equals("Category")) {
+                            Log.i("Item:", item.getCategory());
+                            Log.i("Search Text:", searchText);
+                            if (item.getCategory().toLowerCase().contains(searchText)) {
+                                tempList.add(item);
+                            }
+                        } else if (filterValue.equals("Payment Method")) {
+                            if (item.getPaymentMethod().toLowerCase().contains(searchText)) {
+                                tempList.add(item);
+                            }
+                        } else if (filterValue.equals("Date")) {
+                            if (item.getDate().toLowerCase().contains(searchText)) {
+                                tempList.add(item);
+                            }
                         }
                     }
-                    else if(filterType == 2)
-                    {
-                        if(item.getPaymentMethod().toLowerCase().contains(searchText)){
-                            tempList.add(item);
-                        }
-                    }
-                    else if(filterType == 3)
-                    {
-                        if(item.getDate().toLowerCase().contains(searchText)){
-                            tempList.add(item);
-                        }
-                    }*/
                 }
+                if(tempList.size() > 1 && sortValue != null) {
+                    if (sortValue.equals("Low to high")) {
+                        Collections.sort(tempList, new Comparator<Model>() {
+                            @Override
+                            public int compare(Model m1, Model m2) {
+                                return Integer.parseInt(m1.getAmount()) - Integer.parseInt(m2.getAmount());
+                            }
+                        });
+                    } else if (sortValue.equals("High to low")) {
+                        Collections.sort(tempList, new Comparator<Model>() {
+                            @Override
+                            public int compare(Model m1, Model m2) {
+                                return Integer.parseInt(m2.getAmount()) - Integer.parseInt(m1.getAmount());
+                            }
+                        });
+                    }
+                 }
+            }
+            catch (Exception e){
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
             }
             FilterResults filterResults = new FilterResults();
             filterResults.values = tempList;
+            filterResults.count =tempList.size();
             return filterResults;
         }
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            modelList.clear();
-            modelList.addAll((Collection<? extends Model>) results.values);
-            notifyDataSetChanged();
+            try {
+                modelList.clear();
+                //modelList.addAll((Collection<? extends Model>) results.values);
+                modelList = (ArrayList<Model>) results.values;
+                notifyDataSetChanged();
+            }
+            catch (Exception e){
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
+            }
         }
     };
 
 
     public class MyViewHolder extends ViewHolder {
-        public final TextView text,dateDb, description ;
+        public final TextView text,dateDb, description,amountSpent ;
         public final ImageView imageview;
 
 
@@ -174,10 +209,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             imageview = itemView.findViewById(R.id.image_view);
             dateDb = itemView.findViewById(R.id.txt_date);
             description = itemView.findViewById(R.id.txt_description);
+            amountSpent = itemView.findViewById(R.id.txt_rowamount);
         }
     }
 
     public interface MyAdapterEvents{
         void onMyAdapterClicked(Model dataModel);
     }
+
 }

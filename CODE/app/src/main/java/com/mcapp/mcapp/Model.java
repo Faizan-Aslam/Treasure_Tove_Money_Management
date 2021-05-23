@@ -1,12 +1,13 @@
 package com.mcapp.mcapp;
 
 public class Model {
-    String id,amount,category,comment,date,paymentMethod;
+    String id,transactionName,amount,category,comment,date,paymentMethod;
 
     public Model(){}
 
-    public Model(String id,String amount,String category,String comment,String date,String paymentMethod){
+    public Model(String id,String transactionName,String amount,String category,String comment,String date,String paymentMethod){
         this.id=id;
+        this.transactionName = transactionName;
         this.amount=amount;
         this.category = category;
         this.comment=comment;
@@ -20,6 +21,14 @@ public class Model {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTransactionName() {
+        return transactionName;
+    }
+
+    public void setTransactionName(String transactionName) {
+        this.transactionName = transactionName;
     }
 
     public String getAmount() {

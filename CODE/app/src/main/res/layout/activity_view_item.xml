@@ -117,14 +117,17 @@
 
 
 </LinearLayout>-->
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".ViewItemActivity">
+    tools:context=".ViewItemActivity"
+    android:scrollbarThumbVertical="@color/colorAccent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -139,10 +142,66 @@
             android:layout_marginEnd="30dp">
 
             <LinearLayout
+                android:id="@+id/layoutTransactionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_content"
+                    android:tint="@color/colorAccent" />
+
+                <EditText
+                    android:id="@+id/txt_transactionName"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@null"
+                    android:imeOptions="actionNext"
+                    android:importantForAutofill="no"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="41dp"
+                android:background="@color/colorWhite"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="Transaction Name"
+                android:textAllCaps="true"
+                android:textColor="@color/colorTextSecondary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/layoutTransactionName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/layoutTransactionName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="0dp">
+
+            <LinearLayout
                 android:id="@+id/layoutCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/background_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -193,13 +252,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
                 android:id="@+id/layoutPayment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/background_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -250,13 +311,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
                 android:id="@+id/layoutAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/background_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -275,7 +338,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@null"
-                    android:hint="Amount spent"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="number"
@@ -306,13 +368,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
                 android:id="@+id/layoutDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/background_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -331,17 +395,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@null"
-                    android:hint="Date"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:paddingStart="10dp"
+                    android:paddingTop="15dp"
                     android:paddingEnd="10dp"
+                    android:paddingBottom="10dp"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="10dp" />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -357,20 +420,22 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/layoutDate"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/layoutDate"/>
+                app:layout_constraintTop_toTopOf="@id/layoutDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp">
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="0dp">
 
             <LinearLayout
                 android:id="@+id/layoutComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/background_input"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -397,12 +462,12 @@
                     android:maxLines="15"
                     android:minLines="5"
                     android:paddingStart="10dp"
+                    android:paddingTop="15dp"
                     android:paddingEnd="10dp"
+                    android:paddingBottom="16dp"
                     android:textColor="@color/colorTextPrimary"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="16dp"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <TextView
@@ -421,36 +486,47 @@
                 app:layout_constraintTop_toTopOf="@id/layoutComments" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
-        <Button
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginStart="30dp"
-            android:background="@drawable/background_button"
-            android:text="Delete"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-        <Button
-            android:id="@+id/btn_update"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginStart="30dp"
-            android:background="@drawable/background_button"
-            android:text="Update"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/background_button"
+                android:text="Delete"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_update"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/background_button"
+                android:text="Update"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
 
 </ScrollView>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"/>
+</RelativeLayout>

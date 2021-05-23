@@ -36,6 +36,7 @@ public class GetFirebaseData
                         for(DocumentSnapshot doc: task.getResult()){
                             Model model = new Model(
                                     doc.getId(),
+                                    doc.getString("TransactionName"),
                                     doc.getString("Amount"),
                                     doc.getString("Category"),
                                     doc.getString("Comment"),
@@ -44,7 +45,7 @@ public class GetFirebaseData
                             );
                             dashboardDataList.add(model);
                         }
-                        Toast.makeText(context,"fetched data: "+  dashboardDataList.size(),Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context,"fetched data: "+  dashboardDataList.size(),Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -72,6 +73,7 @@ public class GetFirebaseData
         for(DocumentSnapshot doc: task.getResult()){
             Model model = new Model(
                     doc.getId(),
+                    doc.getString("TransactionName"),
                     doc.getString("Amount"),
                     doc.getString("Category"),
                     doc.getString("Comment"),

@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,191 +34,287 @@ import java.util.Map;
 
 public class ViewItemActivity extends AppCompatActivity {
 
-    private TextView id,amount,comment,date,paymentMethod;
+    private TextView id,transactionName,amount,comment,date;
     String category_selected,payment_selected;
     private Spinner category_spinner,payment_spinner;
     Button btnDelete,btnUpdate;
+    ProgressBar progressBar;
     AlertDialog.Builder builder;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ProgressBarActions progressBarActions = new ProgressBarActions();
+    private GeneralClass generalClass = new GeneralClass();
     String id_;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_item);
+        try {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_view_item);
+            getSupportActionBar().setTitle(R.string.title_viewitemactivity);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //id = findViewById(R.id.textView1);
-        amount = findViewById(R.id.txt_amount);
-        //category = findViewById(R.id.txt_category);
-        category_spinner = findViewById(R.id.spinner_category);
-        comment = findViewById(R.id.txt_comment);
-        date = findViewById(R.id.txt_date);
-        //paymentMethod = findViewById(R.id.txt_paymentMethod);
-        payment_spinner = findViewById(R.id.spinner_paymentMethod);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            transactionName = findViewById(R.id.txt_transactionName);
+            amount = findViewById(R.id.txt_amount);
+            category_spinner = findViewById(R.id.spinner_category);
+            comment = findViewById(R.id.txt_comment);
+            date = findViewById(R.id.txt_date);
+            payment_spinner = findViewById(R.id.spinner_paymentMethod);
+            progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 
-        Intent intent = getIntent();
-        id_ = intent.getStringExtra("id");
-        Toast.makeText(getApplicationContext(),"Id : ."+ id_,Toast.LENGTH_SHORT).show();
+            onLoadData();
 
-        String amount_ = getIntent().getStringExtra("amount");
-        category_selected = getIntent().getStringExtra("category");
-        String comment_ = getIntent().getStringExtra("comment");
-        String date_ = getIntent().getStringExtra("date");
-        payment_selected = getIntent().getStringExtra("paymentMethod");
+            builder = new AlertDialog.Builder(this);
 
-        String[] cate = getResources().getStringArray(R.array.category_names);
-        String[] paym = getResources().getStringArray(R.array.payment_method);
-        List<String> categoryList = new ArrayList<String>(Arrays.asList(cate));
-        List<String> paymentList = new ArrayList<String>(Arrays.asList(paym));
-
-        //id.setText(amount_);
-        amount.setText(amount_);
-        //category.setText(category_);
-        comment.setText(comment_);
-        date.setText(date_);
-        category_spinner.setSelection(categoryList.indexOf(category_selected));
-        payment_spinner.setSelection(paymentList.indexOf(payment_selected));
-        Toast.makeText(getApplicationContext(),"category pos:  "+category_selected + categoryList.indexOf(category_selected),Toast.LENGTH_SHORT).show();
-
-
-        builder = new AlertDialog.Builder(this);
-
-        btnDelete = findViewById(R.id.btn_delete);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            btnDelete = findViewById(R.id.btn_delete);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     delete();
-            }
-        });
+                }
+            });
 
-        btnUpdate = findViewById(R.id.btn_update);
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                update();
-            }
-        });
+            btnUpdate = findViewById(R.id.btn_update);
+            btnUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (validateForm()) {
+                        update();
+                    }
+                }
+            });
 
-        category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                category_selected = parent.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(),category_selected,Toast.LENGTH_SHORT).show();
-            }
+            category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    category_selected = parent.getItemAtPosition(position).toString();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        payment_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                payment_selected = parent.getItemAtPosition(position).toString();
-                //Toast.makeText(getContext(),text,Toast.LENGTH_SHORT).show();
-            }
+                }
+            });
+            payment_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    payment_selected = parent.getItemAtPosition(position).toString();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
+    private void onLoadData(){
+        try {
+            progressBarActions.showProgressBar(progressBar, ViewItemActivity.this);
+
+            Intent intent = getIntent();
+            id_ = intent.getStringExtra("id");
+
+            String transactionName_ = getIntent().getStringExtra("transactionName");
+            String amount_ = getIntent().getStringExtra("amount");
+            category_selected = getIntent().getStringExtra("category");
+            String comment_ = getIntent().getStringExtra("comment");
+            String date_ = getIntent().getStringExtra("date");
+            payment_selected = getIntent().getStringExtra("paymentMethod");
+
+            String[] cate = getResources().getStringArray(R.array.category_names);
+            String[] paym = getResources().getStringArray(R.array.payment_method);
+            List<String> categoryList = new ArrayList<String>(Arrays.asList(cate));
+            List<String> paymentList = new ArrayList<String>(Arrays.asList(paym));
+
+            transactionName.setText(transactionName_);
+            amount.setText(amount_);
+            date.setText(date_);
+            comment.setText(comment_);
+            category_spinner.setSelection(categoryList.indexOf(category_selected));
+            payment_spinner.setSelection(paymentList.indexOf(payment_selected));
+            //Toast.makeText(getApplicationContext(),"category pos:  "+category_selected + categoryList.indexOf(category_selected),Toast.LENGTH_SHORT).show();
+
+            progressBarActions.hideProgressBar(progressBar, ViewItemActivity.this);
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
     private void delete(){
-        //Setting message manually and performing action on button click
-        builder.setMessage("Do you want to delete this transaction ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        deleteItem();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Action for 'NO' Button
-                        dialog.cancel();
-                    }
-                });
-        //Creating dialog box
-        AlertDialog alert = builder.create();
-        //Setting the title manually
-        alert.setTitle("Delete Transaction");
-        alert.show();
+        try {
+            //Setting message manually and performing action on button click
+            builder.setMessage("Do you want to delete this transaction ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //finish();
+                            deleteItem();
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //  Action for 'NO' Button
+                            dialog.cancel();
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            //Setting the title manually
+            alert.setTitle("Delete Transaction");
+            alert.show();
+        }
+        catch ( Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     private void update(){
-        //Setting message manually and performing action on button click
-        builder.setMessage("Do you want to update this transaction ?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                        updateItem();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Action for 'NO' Button
-                        dialog.cancel();
-                    }
-                });
-        //Creating dialog box
-        AlertDialog alert = builder.create();
-        //Setting the title manually
-        alert.setTitle("Update Transaction");
-        alert.show();
+        try {
+            generalClass.hideKeyboardActivity(ViewItemActivity.this);
+
+            //Setting message manually and performing action on button click
+            builder.setMessage("Do you want to update this transaction ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //finish();
+                            updateItem();
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            //  Action for 'NO' Button
+                            dialog.cancel();
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            //Setting the title manually
+            alert.setTitle("Update Transaction");
+            alert.show();
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     private void updateItem(){
-        Map<String,Object> dataToSave = new HashMap<String,Object>();
-        dataToSave.put("Amount",amount.getText().toString());
-        dataToSave.put("Category",category_selected);
-        dataToSave.put("Comment", comment.getText().toString());
-        dataToSave.put("PaymentMethod",payment_selected);
-        dataToSave.put("Date",date.getText().toString());
-        Toast.makeText(getApplicationContext(),category_selected,Toast.LENGTH_SHORT).show();
-        db.collection("MCCollection").document(id_)
-                .set(dataToSave)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Transaction updated..",Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Failed to update..", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        try {
+            progressBarActions.showProgressBar(progressBar, ViewItemActivity.this);
+            Map<String, Object> dataToSave = new HashMap<String, Object>();
+            dataToSave.put("TransactionName", transactionName.getText().toString().trim());
+            dataToSave.put("Amount", amount.getText().toString().trim());
+            dataToSave.put("Category", category_selected);
+            dataToSave.put("Comment", comment.getText().toString().trim());
+            dataToSave.put("PaymentMethod", payment_selected);
+            dataToSave.put("Date", date.getText().toString());
+            db.collection("MCCollection").document(id_)
+                    .set(dataToSave)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            progressBarActions.hideProgressBar(progressBar, ViewItemActivity.this);
+                            Toast.makeText(getApplicationContext(), "Transaction updated..", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressBarActions.hideProgressBar(progressBar, ViewItemActivity.this);
+                            Toast.makeText(getApplicationContext(), "Failed to update..", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
     private void deleteItem(){
-        db.collection("MCCollection").document(id_)
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(),"Transaction deleted..",Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Failed to delete..", Toast.LENGTH_SHORT).show();
-            }
-        });
+        try {
+            progressBarActions.showProgressBar(progressBar, ViewItemActivity.this);
+            db.collection("MCCollection").document(id_)
+                    .delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            progressBarActions.hideProgressBar(progressBar, ViewItemActivity.this);
+                            Toast.makeText(getApplicationContext(), "Transaction deleted..", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressBarActions.hideProgressBar(progressBar, ViewItemActivity.this);
+                    Toast.makeText(getApplicationContext(), "Failed to delete..", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        try {
+            int id = item.getItemId();
 
-        if (id==android.R.id.home) {
-            finish();
-            return true;
+            if (id == android.R.id.home) {
+                finish();
+                return true;
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
         return false;
+    }
+
+    public Boolean validateForm(){
+        try {
+            if (transactionName.getText().toString().trim().isEmpty()) {
+                transactionName.setError("Please enter transaction name");
+                transactionName.requestFocus();
+                return false;
+            }
+            if (amount.getText().toString().trim().isEmpty()) {
+                amount.setError("Please enter amount spent");
+                amount.requestFocus();
+                return false;
+            }
+            if (comment.getText().toString().trim().isEmpty()) {
+                comment.setError("Please enter a comment");
+                comment.requestFocus();
+                return false;
+            }
+            if (amount.getText().length() <= 0) {
+                amount.setError("Please enter a valid amount");
+                amount.requestFocus();
+                return false;
+            }
+            if (Integer.parseInt(amount.getText().toString()) <= 0) {
+                amount.setError("Please enter a valid amount");
+                amount.requestFocus();
+                return false;
+            }
+            if (amount.getText().toString().length() > 8) {
+                amount.setError("Amount should not exceed 99999999");
+                amount.requestFocus();
+                return false;
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+        return true;
     }
 }

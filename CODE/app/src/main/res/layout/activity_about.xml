@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity"
+    android:layout_margin="20dp"
+    android:scrollbarThumbVertical="@color/colorAccent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+            <TextView
+                android:id="@+id/about_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="18sp" />
+            <Button
+                android:id="@+id/btn_aboutNewTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add new transaction"/>
+            <Button
+                android:id="@+id/btn_aboutDashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View all transactions"/>
+            <Button
+                android:id="@+id/btn_aboutUpdateDelTransaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Update/Delete transaction"/>
+            <Button
+                android:id="@+id/btn_aboutSearchFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Search and Filter transaction"/>
+    </LinearLayout>
+</ScrollView>
