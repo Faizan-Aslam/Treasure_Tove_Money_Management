@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AreaOfTransactionActivity">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="3"
+        android:columnCount="1">
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="Choose the Area of Transaction :"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <worker8.com.github.radiogroupplus.RadioGroupPlus
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_home_black_24dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginStart="16dp"
+                            android:text="Home"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/radio_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="38dp"
+                            android:layout_height="38dp"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/ic_office" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginStart="16dp"
+                            android:text="Office"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/radio_office"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp" />
+                    </LinearLayout>
+                </worker8.com.github.radiogroupplus.RadioGroupPlus>
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:text="Choose the currency :"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+                <com.scrounger.countrycurrencypicker.library.Buttons.CountryCurrencyButton
+                    android:id="@+id/btn_currency"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    app:country_code="US"
+                    app:show_currency="true"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"/>
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text="Budget Planning :"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Set your monthly budget:"
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_margin="20dp"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp">
+
+                    <LinearLayout
+                        android:id="@+id/layoutAmount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/background_input"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:layout_marginStart="10dp"
+                            android:contentDescription="@string/app_name"
+                            android:src="@drawable/ic_money" />
+
+                        <EditText
+                            android:id="@+id/txt_budgetAmount"
+                            android:layout_width="match_parent"
+                            android:layout_height="55dp"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:importantForAutofill="no"
+                            android:inputType="number"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:textColor="@color/colorTextPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="41dp"
+                        android:background="@color/colorWhite"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:text="Amount"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/layoutAmount"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/layoutAmount" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Button
+                    android:id="@+id/btn_setBudget"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/background_button"
+                    android:text="Set budget"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
+</ScrollView>

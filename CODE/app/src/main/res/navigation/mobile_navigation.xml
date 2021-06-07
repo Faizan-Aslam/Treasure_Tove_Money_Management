@@ -22,4 +22,16 @@
         android:name="com.mcapp.mcapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_favourites"
+        android:name="com.mcapp.mcapp.ui.favourites.FavouritesFragment"
+        android:label="@string/title_navfavourites"
+        tools:layout="@layout/favourites_fragment"/>
+
+    <fragment
+        android:id="@+id/navigation_budget"
+        android:name="com.mcapp.mcapp.ui.charts.ChartsFragment"
+        android:label="@string/title_navbudgetplanning"
+        tools:layout="@layout/charts_fragment"/>
 </navigation>

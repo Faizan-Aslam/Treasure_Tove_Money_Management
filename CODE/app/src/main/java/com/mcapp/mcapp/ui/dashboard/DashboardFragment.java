@@ -2,7 +2,10 @@ package com.mcapp.mcapp.ui.dashboard;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,10 +40,13 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.mcapp.mcapp.GeneralClass;
 import com.mcapp.mcapp.MainActivity;
 import com.mcapp.mcapp.Model;
 import com.mcapp.mcapp.MyAdapter;
@@ -48,21 +54,36 @@ import com.mcapp.mcapp.ProgressBarActions;
 import com.mcapp.mcapp.R;
 import com.mcapp.mcapp.ViewItemActivity;
 import com.mcapp.mcapp.ui.GlobalClass;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableCell;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEvents {
 
     private DashboardViewModel dashboardViewModel;
     private ProgressBarActions progressBarActions = new ProgressBarActions();
     private SearchView searchView ;
+    GeneralClass generalClass = new GeneralClass();
 
     MyAdapter myAdapter;
     RecyclerView recyclerView;
-    ProgressDialog progressDialog;
     private ProgressBar progressBar;
+    TextView noDataTextView;
 
     public ArrayList<Model> dashboardDataList = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -74,6 +95,7 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
         try {
             recyclerView = root.findViewById(R.id.recycler_view);
             progressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
+            noDataTextView = root.findViewById(R.id.txt_NoData);
 
             final ChipGroup filterChipGroup = root.findViewById(R.id.filter_chip_group);
             final ChipGroup choiceChipGroup = root.findViewById(R.id.choice_chip_group);
@@ -170,6 +192,9 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
                 toggleFilter();
                 //Toast.makeText(getContext(),"Filter clicked ",Toast.LENGTH_SHORT).show();
             }
+            else if(id == R.id.action_download){
+                exportToExcel();
+            }
         }
         catch (Exception e){
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
@@ -206,7 +231,6 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
         catch (Exception e){
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void fetchOnLoadData(){
@@ -215,7 +239,8 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
             progressBarActions.showProgressBar(progressBar, getActivity());
             final MyAdapter.MyAdapterEvents events = this;
 
-            db.collection("MCCollection").get()
+            db.collection("MCCollection").whereEqualTo("UserId",generalClass.getSPUserId(getActivity()))
+                    .whereEqualTo("AreaOfTransaction",generalClass.getSPAreaOfTransaction(getActivity())).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -227,14 +252,20 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
                                         doc.getString("Category"),
                                         doc.getString("Comment"),
                                         doc.getString("Date"),
-                                        doc.getString("PaymentMethod")
+                                        doc.getString("PaymentMethod"),
+                                        doc.getString("Favourite"),
+                                        doc.getString("Currency"),
+                                        doc.getString("CurrencySymbol")
                                 );
                                 dashboardDataList.add(model);
                             }
                             progressBarActions.hideProgressBar(progressBar, getActivity());
-                            myAdapter = new MyAdapter(events, getContext(), dashboardDataList, getActivity().getApplicationContext());
+                            myAdapter = new MyAdapter(events, getContext(), dashboardDataList, getActivity());
                             recyclerView.setAdapter(myAdapter);
                             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                            if(dashboardDataList.size() == 0){
+                                noDataTextView.setVisibility(View.VISIBLE);
+                            }
                             //Toast.makeText(getContext(),"fetched data: "+  dashboardDataList.size(),Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -260,6 +291,9 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
             intent.putExtra("comment", data.getComment());
             intent.putExtra("date", data.getDate());
             intent.putExtra("paymentMethod", data.getPaymentMethod());
+            intent.putExtra("favourite",data.getFavourite());
+            intent.putExtra("currency",data.getCurrency());
+            intent.putExtra("currencySymbol",data.getCurrencySymbol());
             getActivity().startActivity(intent);
         }
         catch (Exception e){
@@ -272,4 +306,61 @@ public class DashboardFragment extends Fragment implements MyAdapter.MyAdapterEv
         openItemActivity(dataModel);
     }
 
+    public void exportToExcel(){
+        if(dashboardDataList.size() == 0){
+            Toast.makeText(getContext(),"No data to export", Toast.LENGTH_LONG).show();
+        }
+        else{
+            AssetManager am = getResources().getAssets();
+            try {
+                InputStream iStream = am.open("TreasureTrove_Data.xls");
+                //Workbook wb = Workbook.getWorkbook(iStream);
+                Workbook existingWorkbook = Workbook.getWorkbook(iStream);
+                File path = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS);
+                File file = new File(path, "/" + "TreasureTrove_Data.xls");
+                WritableWorkbook writableWb = Workbook.createWorkbook(file,existingWorkbook);
+                WritableSheet st = writableWb.getSheet(0);
+
+                WritableCell cellName = new Label(2,0,generalClass.getSPUserName(getActivity()));
+                WritableCell cellArea = new Label(2,1,generalClass.getSPAreaOfTransaction(getActivity()));
+                st.addCell(cellName);
+                st.addCell(cellArea);
+
+                int rowNumber = 4, count = 1;
+                for (Model mod :dashboardDataList){
+                    WritableCell cell0 = new Label(0,rowNumber,String.valueOf(count));
+                    WritableCell cell1 = new Label(1,rowNumber,mod.getTransactionName());
+                    WritableCell cell2 = new Label(2,rowNumber,mod.getCategory());
+                    WritableCell cell3 = new Label(3,rowNumber,mod.getPaymentMethod());
+                    WritableCell cell4 = new Label(4,rowNumber,mod.getAmount());
+                    WritableCell cell5 = new Label(5,rowNumber,mod.getDate());
+                    WritableCell cell6 = new Label(6,rowNumber,mod.getComment());
+
+                    st.addCell(cell0);
+                    st.addCell(cell1);
+                    st.addCell(cell2);
+                    st.addCell(cell3);
+                    st.addCell(cell4);
+                    st.addCell(cell5);
+                    st.addCell(cell6);
+
+                    rowNumber++;
+                    count++;
+                }
+                writableWb.write();
+                writableWb.close();
+                existingWorkbook.close();
+                Toast.makeText(getContext(),"Data exported successfully !!", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (BiffException e) {
+                e.printStackTrace();
+            } catch (RowsExceededException e) {
+                e.printStackTrace();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

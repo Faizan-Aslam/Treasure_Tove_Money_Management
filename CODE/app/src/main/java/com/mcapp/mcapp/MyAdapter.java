@@ -1,10 +1,16 @@
 package com.mcapp.mcapp;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 
+import com.like.LikeButton;
 import com.mcapp.mcapp.ui.GlobalClass;
 import com.mcapp.mcapp.ui.dashboard.DashboardFragment;
 
@@ -39,6 +46,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
     private MyAdapterEvents myAdapterEvents;
 
@@ -47,14 +56,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     List<Model> fullList;
     DashboardFragment dashboardFragment = new DashboardFragment();
     GlobalClass globalVariable;
+    String currencySymbol;
+    GeneralClass generalClass = new GeneralClass();
 
-    public MyAdapter(MyAdapterEvents myAdapterEvents,Context ct, ArrayList<Model> modelList, Context applicationContext) {
+    public MyAdapter(MyAdapterEvents myAdapterEvents,Context ct, ArrayList<Model> modelList, Activity activity) {
         try {
             this.myAdapterEvents = myAdapterEvents;
             this.context = ct;
             this.modelList = modelList;
             fullList = new ArrayList<>(modelList);
-            globalVariable = (GlobalClass) applicationContext;
+            globalVariable = (GlobalClass) activity.getApplicationContext();
+            currencySymbol = generalClass.getSPCurrencySymbol(activity);
         }
         catch (Exception e){
             Toast.makeText(context,e.getMessage(),Toast.LENGTH_LONG).show();
@@ -75,8 +87,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             Model mod = modelList.get(position);
             //String str = mod.getCategory() + "  [ " + mod.getAmount() + " ]";
             holder.text.setText("Category : " + mod.getCategory());
-            holder.amountSpent.setText("Amount Spent : $ " + mod.getAmount());
+            String amount = mod.getAmount();
+            Spannable span = new SpannableString("Amount Spent : "+ currencySymbol + " " + amount);
+            if(mod.getCategory().equals("Income") || mod.getCategory().equals("Savings")) {
+                span.setSpan(new ForegroundColorSpan(Color.parseColor("#76b735")), 15, span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            else {
+                span.setSpan(new ForegroundColorSpan(Color.RED), 15, span.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            holder.amountSpent.setText(span);
             holder.description.setText(mod.getTransactionName());
+            if(Boolean.parseBoolean(mod.getFavourite())) {
+                holder.likeButton.setVisibility(View.VISIBLE);
+                holder.likeButton.setLiked(Boolean.parseBoolean(mod.getFavourite()));
+            }
+            else{
+                holder.likeButton.setVisibility(View.GONE);
+            }
 
             String dateString = mod.getDate().substring(0, 10);
             //Date dt1 = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(dateString);
@@ -201,6 +228,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
     public class MyViewHolder extends ViewHolder {
         public final TextView text,dateDb, description,amountSpent ;
         public final ImageView imageview;
+        public final LikeButton likeButton;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -210,6 +238,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             dateDb = itemView.findViewById(R.id.txt_date);
             description = itemView.findViewById(R.id.txt_description);
             amountSpent = itemView.findViewById(R.id.txt_rowamount);
+            likeButton = itemView.findViewById(R.id.like_button);
+
         }
     }
 

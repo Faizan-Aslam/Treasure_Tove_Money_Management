@@ -1,11 +1,12 @@
 package com.mcapp.mcapp;
 
 public class Model {
-    String id,transactionName,amount,category,comment,date,paymentMethod;
+    String id,transactionName,amount,currency,currencySymbol,category,comment,date,paymentMethod, favourite;
 
     public Model(){}
 
-    public Model(String id,String transactionName,String amount,String category,String comment,String date,String paymentMethod){
+    public Model(String id,String transactionName,String amount,String category,String comment,String date,
+                 String paymentMethod, String favourite, String currency, String currencySymbol){
         this.id=id;
         this.transactionName = transactionName;
         this.amount=amount;
@@ -13,6 +14,9 @@ public class Model {
         this.comment=comment;
         this.date=date;
         this.paymentMethod=paymentMethod;
+        this.favourite = favourite;
+        this.currency = currency;
+        this.currencySymbol =currencySymbol;
     }
 
     public String getId() {
@@ -37,6 +41,22 @@ public class Model {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getCurrencySymbol() {
+        return currencySymbol;
+    }
+
+    public void setCurrencySymbol(String currencySymbol) {
+        this.currencySymbol = currencySymbol;
     }
 
     public String getCategory() {
@@ -69,5 +89,13 @@ public class Model {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(String favourite) {
+        this.favourite = favourite;
     }
 }

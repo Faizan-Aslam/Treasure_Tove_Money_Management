@@ -21,13 +21,17 @@
         </menu>
     </item>
     <item android:id="@+id/action_account"
-        android:title="account"
+        android:title="settings"
         app:showAsAction="always"
-        android:icon="@drawable/ic_person">
+        android:icon="@drawable/ic_settings">
         <menu>
             <item android:id="@+id/action_viewProfile"
                 android:title="My Profile"
                 android:icon="@drawable/ic_viewprofile"
+                app:showAsAction="always"/>
+            <item android:id="@+id/action_areaoftransaction"
+                android:title="Preferences"
+                android:icon="@drawable/ic_domain"
                 app:showAsAction="always"/>
             <item android:id="@+id/action_logout"
                 android:icon="@drawable/ic_logout"

@@ -18,12 +18,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mcapp.mcapp.ui.GlobalClass;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
     private ProgressBarActions progressBarActions = new ProgressBarActions();
     private GeneralClass generalClass = new GeneralClass();
+    private GlobalClass globalVariable;
     private TextView register, forgotPassword;
     private EditText editTextEmail, editTextPassword;
     private ProgressBar progressBar;
@@ -35,7 +37,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_login);
 
+            globalVariable = (GlobalClass) this.getApplicationContext();
             mAuth = FirebaseAuth.getInstance();
+
+            Boolean loginToken = generalClass.getSPLoginToken(LoginActivity.this);
+            if(loginToken){
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+               // progressBarActions.hideProgressBar(progressBar, LoginActivity.this);
+                //globalVariable.setUserId(mAuth.getCurrentUser().getUid());
+            }
 
             register = (TextView) findViewById(R.id.register);
             register.setOnClickListener(this);
@@ -108,6 +118,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (task.isSuccessful()) {
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         progressBarActions.hideProgressBar(progressBar, LoginActivity.this);
+                        generalClass.putSPLoginToken(LoginActivity.this,true);
+                        generalClass.putSPUserId(LoginActivity.this,mAuth.getCurrentUser().getUid());
+                        generalClass.putSPUserName(LoginActivity.this, "nothing");
+                        //globalVariable.setUserId(mAuth.getCurrentUser().getUid());
                     } else {
                         Toast.makeText(LoginActivity.this, "Failed to Login! Please check your credentials", Toast.LENGTH_LONG).show();
                         progressBarActions.hideProgressBar(progressBar, LoginActivity.this);

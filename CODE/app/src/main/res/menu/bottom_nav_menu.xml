@@ -5,15 +5,20 @@
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_navhome" />
-
     <item
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_navdashboard"/>
-
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/ic_add"
         android:title="@string/title_navnotifications"/>
-
+    <item
+        android:id="@+id/navigation_favourites"
+        android:icon="@drawable/heart_symbol"
+        android:title="@string/title_navfavourites"/>
+    <item
+        android:id="@+id/navigation_budget"
+        android:icon="@drawable/ic_charts"
+        android:title="@string/title_navbudgetplanning"/>
 </menu>

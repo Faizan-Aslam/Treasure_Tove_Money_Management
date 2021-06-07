@@ -12,4 +12,8 @@
         android:title="Sort"
         app:showAsAction="always"
         android:icon="@drawable/ic_filter_list"/>
+    <item android:id="@+id/action_download"
+        android:title="Download"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_download"/>
 </menu>

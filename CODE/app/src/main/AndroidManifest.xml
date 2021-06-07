@@ -3,35 +3,50 @@
     package="com.mcapp.mcapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
-        android:name="com.mcapp.mcapp.ui.GlobalClass"
+        android:name=".ui.GlobalClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ForgotPasswordActivity"
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true">
+        <activity android:name=".AreaOfTransactionActivity"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
-        <activity android:name=".ViewProfileActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".LoginActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity
+            android:name=".ViewFavouriteActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".ViewProfileActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".ContactActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".ContactActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".FAQActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".ViewItemActivity"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"/>
+        <activity
+            android:name=".ViewItemActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
