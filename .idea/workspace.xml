@@ -20,9 +20,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1646248-6981-4f7c-9364-052ecd1e12c7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/CODE/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/CODE/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CODE/app/src/main/java/com/mcapp/mcapp/ui/notifications/NotificationsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/CODE/app/src/main/java/com/mcapp/mcapp/ui/notifications/NotificationsFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CODE/app/src/main/java/com/mcapp/mcapp/GeneralClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/CODE/app/src/main/java/com/mcapp/mcapp/GeneralClass.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
