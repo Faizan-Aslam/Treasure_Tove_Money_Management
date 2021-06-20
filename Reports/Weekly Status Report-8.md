@@ -2,12 +2,16 @@
 
 We tried to allocate our tasks among the group members
 
-MOHAMMAD FAIZAN ASLAM & MIMRAZ HASSAN : ASSIGNED TO PREPARE THE PRESENTATION
-LAKHSMI HARIKA NAKKA & KVS RAJU : DEVELOPMENT OF THE APPLICATION 
+MOHAMMAD FAIZAN ASLAM       : PRESENTATION & BLOG 
+LAKHSMI HARIKA NAKKA        : LEAD DEVELOPER & SCRUM MASTER & UI TESTING
+VENKATA SUBBA RAJU KANUMURI : DEVELOPER AND FUNCTIONAL TESTER
+MIMRAZ HASSAN               : WEEKLY REPORT
 
 ##ACTIVITIES OF THE WEEK##
 
-According to the customer requirements we have done our second criteria.
+Advanced prototype is considerd as one of the important milestones of our project.
+Major Development changes and interface changes were made.
+Updated requirments were included after the client call.
 Preparing presentation slides
 Observing the app to collect feedback
 Working on blog presentation
