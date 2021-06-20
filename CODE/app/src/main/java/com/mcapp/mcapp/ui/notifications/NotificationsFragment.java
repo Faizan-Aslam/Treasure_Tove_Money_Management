@@ -84,21 +84,6 @@ public class NotificationsFragment extends Fragment   {
     public AlertDialog.Builder builder;
 
 
-    FirebaseFirestore db;
-    //private DocumentReference nDocRef = FirebaseFirestore.getInstance().collection("MCCollection");
-    public static final String USERID_KEY = "UserId";
-    public static final String TRANSACTIONNAME_KEY = "TransactionName";
-    public static final String AMOUNT_KEY = "Amount";
-    public static final String CATEGORY_KEY = "Category";
-    public static final String COMMENT_KEY = "Comment";
-    public static final String DATE_KEY = "Date";
-    public static final String PAYMENTMETHOD_KEY = "PaymentMethod";
-    public static final String FAVOURITE_KEY = "Favourite";
-    public static final String AREAOFTRANSACTION_KEY = "AreaOfTransaction";
-    public static final String CURRENCY_KEY = "Currency";
-    public static final String CURRENCY_SYMBOL_KEY = "CurrencySymbol";
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
@@ -237,7 +222,6 @@ public class NotificationsFragment extends Fragment   {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
         return sdf.format(new Date());
     }
-
     public void showDateTimeDialog(final EditText dateTime){
         try {
             final Calendar calendar = Calendar.getInstance();
@@ -270,7 +254,6 @@ public class NotificationsFragment extends Fragment   {
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
-
     public Boolean validateForm(){
         try {
             if (transaction_name.getText().toString().trim().isEmpty()) {
@@ -314,7 +297,6 @@ public class NotificationsFragment extends Fragment   {
         }
         return true;
     }
-
     public void addNewItem(View v){
         try{
             progressBarActions.showProgressBar(progressBar,getActivity());
@@ -371,10 +353,10 @@ public class NotificationsFragment extends Fragment   {
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
-
     public  void showBudgetExceededAlert(Integer amount) {
         if (amount > 0) {
-            builder.setMessage("You have exceeded your monthly budget by : "+ generalClass.getSPCurrencySymbol(getActivity()) + " " + amount)
+            builder.setMessage("You have exceeded your monthly budget by : "
+                    + generalClass.getSPCurrencySymbol(getActivity()) + " " + amount)
                     .setCancelable(false)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
