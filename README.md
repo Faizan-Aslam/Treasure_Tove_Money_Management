@@ -7,6 +7,9 @@ Here are the series of blogs we have written to help you navigate through our so
 
 
 1- [ABOUT US](https://code.ovgu.de/maslam/treasure_trove/-/wikis/About-our-team)
+2- [BASIC PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Basic-Prototype)
+3- [ADVANCED PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Advanced-Prototype)
+4- [BETA PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Beta-Prototype)
 
 
 
