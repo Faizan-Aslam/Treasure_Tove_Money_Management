@@ -159,7 +159,7 @@
                     android:gravity="fill"
                     android:imeOptions="actionNext"
                     android:importantForAutofill="no"
-                    android:text="Favourite Transaction      "
+                    android:text="Favourite Transaction"
                     android:textColor="#FC0F0F0F"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -167,7 +167,7 @@
                     app:icon_type="heart"
                     app:icon_size="20dp"
                     android:id="@+id/like_button"
-                    android:layout_gravity="fill"
+                    android:layout_gravity="center"
                     android:layout_row="0"
                     android:layout_column="1"/>
             </GridLayout>

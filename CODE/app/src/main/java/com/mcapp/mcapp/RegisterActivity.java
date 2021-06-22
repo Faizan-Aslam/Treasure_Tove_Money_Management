@@ -80,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             final String name = editTextName.getText().toString().trim();
             final String contactNo = editTextContactNo.getText().toString().trim();
 
+            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
             if (name.isEmpty()) {
                 editTextName.setError("Name is required!");
                 editTextName.requestFocus();
@@ -100,9 +102,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 editTextPassword.requestFocus();
                 return;
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (!email.matches(emailPattern)) {
                 editTextEmail.setError("Please provide a valid Email id");
                 editTextEmail.requestFocus();
+                return;
+            }
+            if (contactNo.length() > 11) {
+                editTextContactNo.setError("Contact number should not be more than 11 digits!");
+                editTextContactNo.requestFocus();
                 return;
             }
             if (password.length() < 6) {

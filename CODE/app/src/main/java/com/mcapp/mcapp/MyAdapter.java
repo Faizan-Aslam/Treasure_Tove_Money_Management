@@ -109,18 +109,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> impl
             //Date dt1 = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(dateString);
             holder.dateDb.setText(dateString);
 
-            switch (mod.getPaymentMethod()) {
-                case "Cash":
-                    holder.imageview.setImageResource(R.drawable.cash);
+            switch (mod.getCategory()) {
+                case "Food":
+                    holder.imageview.setImageResource(R.drawable.food);
                     break;
-                case "Card":
-                    holder.imageview.setImageResource(R.drawable.card);
+                case "House Rent":
+                    holder.imageview.setImageResource(R.drawable.houserent);
                     break;
-                case "Google Pay":
-                    holder.imageview.setImageResource(R.drawable.gpay);
+                case "Entertainment":
+                    holder.imageview.setImageResource(R.drawable.entertainment);
+                    break;
+                case "Savings":
+                    holder.imageview.setImageResource(R.drawable.savings);
+                    break;
+                case "Income":
+                    holder.imageview.setImageResource(R.drawable.income);
                     break;
                 default:
-                    holder.imageview.setImageResource(R.drawable.cash);
+                    holder.imageview.setImageResource(R.drawable.food);
                     break;
             }
             holder.itemView.setOnClickListener(new View.OnClickListener() {
