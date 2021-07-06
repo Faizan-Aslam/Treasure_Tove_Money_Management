@@ -3,7 +3,7 @@
     <string name="title_navhome">Treasure Trove</string>
     <string name="title_navdashboard">Dashboard</string>
     <string name="title_navnotifications">New Transaction</string>
-    <string name="title_navfavourites">"   "Favourites</string>
+    <string name="title_navfavourites">"   "Recursive Transactions</string>
     <string name="title_viewfavactivity">"   "Favourite</string>
     <string name="title_navbudgetplanning">"   "Budget Planning</string>
     <string name="title_home">"  "Treasure Trove</string>

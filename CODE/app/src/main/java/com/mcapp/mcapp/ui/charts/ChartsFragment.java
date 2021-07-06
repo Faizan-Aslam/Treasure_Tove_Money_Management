@@ -90,7 +90,7 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
     private ProgressBar progressBar;
     private ProgressBarActions progressBarActions = new ProgressBarActions();
 
-    CardView piecharttab, barcharttab;
+    CardView piecharttab,piecharttab2, barcharttab;
 
     BarChart barChart;
     BarData barData;
@@ -103,6 +103,11 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
     PieData pieData;
     PieDataSet pieDataSet;
     ArrayList<PieEntry> pieEntries;
+
+    PieChart pieChart2;
+    PieData pieData2;
+    PieDataSet pieDataSet2;
+    ArrayList<PieEntry> pieEntries2;
 
 
     ArrayList<IBarDataSet> dataSets = new ArrayList<>();
@@ -136,6 +141,7 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
             piecharttab = root.findViewById(R.id.pieChartTab);
             barcharttab = root.findViewById(R.id.barChartTab);
             pieChart = root.findViewById(R.id.pieChart);
+            pieChart2 = root.findViewById(R.id.pieChart2);
             barChart = root.findViewById(R.id.barChart);
             progressBar = (ProgressBar) root.findViewById(R.id.progress_bar);
 
@@ -149,6 +155,7 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
                     //Toast.makeText(getContext(),"firebase data: "+  dataList.size(),Toast.LENGTH_SHORT).show();
                     // Pie chart
                     preparePieChart();
+                    preparePieChart2();
 
                     //Bar chart
                     prepareBarChart();
@@ -174,7 +181,8 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
     private void preparePieChart(){
         try {
             getPieEntries();
-            pieDataSet = new PieDataSet(pieEntries, "Amount Spent");
+            pieDataSet = new PieDataSet(pieEntries, "");
+            pieDataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
             pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
             pieDataSet.setValueTextColor(Color.BLACK);
             pieDataSet.setValueTextSize(16F);
@@ -193,15 +201,36 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
+    private void preparePieChart2(){
+        try {
+            getPieEntries2();
+            pieDataSet2 = new PieDataSet(pieEntries2, "");
+            pieDataSet2.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+            pieDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
+            pieDataSet2.setValueTextColor(Color.BLACK);
+            pieDataSet2.setValueTextSize(16F);
+
+            pieData2 = new PieData(pieDataSet2);
+            pieChart2.setData(pieData2);
+            pieChart2.getDescription().setEnabled(false);
+            pieChart2.setCenterText("Savings/ Income");
+            pieChart2.setEntryLabelColor(Color.BLACK);
+            pieChart2.animate();
+
+            pieChart2.notifyDataSetChanged(); // let the chart know it's data changed
+            pieChart2.invalidate();
+        }
+        catch (Exception e){
+            Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
     private void getPieEntries() {
         pieEntries = new ArrayList<>();
         try {
-            String c1 = "Food", c2 = "House Rent", c3 = "Entertainment", c4 = "Savings", c5 = "Income";
+            String c1 = "Food", c2 = "House Rent", c3 = "Entertainment";
             ArrayList<Model> c1Entries = new ArrayList<>(),
                     c2Entries = new ArrayList<>(),
-                    c3Entries = new ArrayList<>(),
-                    c4Entries = new ArrayList<>(),
-                    c5Entries = new ArrayList<>();
+                    c3Entries = new ArrayList<>();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
             String currentDate = sdf.format(new Date());
             Date date = null;
@@ -215,10 +244,6 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
                         c2Entries.add(mod);
                     else if (mod.getCategory().contains(c3))
                         c3Entries.add(mod);
-                    else if (mod.getCategory().contains(c4))
-                        c4Entries.add(mod);
-                    else if (mod.getCategory().contains(c5))
-                        c5Entries.add(mod);
                 }
             }
             //Toast.makeText(this.getContext(),"food total : "+ dataList.size() + c1Entries.size() + c2Entries.size() + getSumOfEntries(c1Entries),Toast.LENGTH_SHORT).show();
@@ -226,8 +251,34 @@ public class ChartsFragment extends Fragment implements View.OnClickListener  {
             pieEntries.add(new PieEntry(getSumOfEntries(c1Entries), c1));
             pieEntries.add(new PieEntry(getSumOfEntries(c2Entries), c2));
             pieEntries.add(new PieEntry(getSumOfEntries(c3Entries), c3));
-            pieEntries.add(new PieEntry(getSumOfEntries(c4Entries), c4));
-            pieEntries.add(new PieEntry(getSumOfEntries(c5Entries), c5));
+        }
+        catch (Exception e){
+            Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+        }
+    }
+    private void getPieEntries2() {
+        pieEntries2 = new ArrayList<>();
+        try {
+            String c4 = "Savings", c5 = "Income";
+            ArrayList<Model> c4Entries = new ArrayList<>(),
+                    c5Entries = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, HH:mm", Locale.getDefault());
+            String currentDate = sdf.format(new Date());
+            Date date = null;
+
+            for (Model mod : dataList) {
+                date = sdf.parse(mod.getDate());
+                if(sdf.parse(currentDate).getYear() == date.getYear()) {
+                    if (mod.getCategory().contains(c4))
+                        c4Entries.add(mod);
+                    else if (mod.getCategory().contains(c5))
+                        c5Entries.add(mod);
+                }
+            }
+            //Toast.makeText(this.getContext(),"food total : "+ dataList.size() + c1Entries.size() + c2Entries.size() + getSumOfEntries(c1Entries),Toast.LENGTH_SHORT).show();
+
+            pieEntries2.add(new PieEntry(getSumOfEntries(c4Entries), c4));
+            pieEntries2.add(new PieEntry(getSumOfEntries(c5Entries), c5));
         }
         catch (Exception e){
             Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
