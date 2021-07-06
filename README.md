@@ -15,7 +15,8 @@ Here are the series of blogs we have written to help you navigate through our so
    
 
    Please install our application using the below apk file:
-   [ADVANCED PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Advanced-Prototype)
+   https://code.ovgu.de/maslam/treasure_trove/-/wikis/03.-Advanced-Prototype#:~:text=TreasureTrove_v22.apk
+  
  
 
 
