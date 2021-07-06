@@ -14,6 +14,10 @@ Here are the series of blogs we have written to help you navigate through our so
 4. [BETA PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Beta-Prototype)
    
 
+   Please install our application using the below apk file:
+   [ADVANCED PROTOTYPE](https://code.ovgu.de/maslam/treasure_trove/-/wikis/Advanced-Prototype)
+ 
+
 
 
 
